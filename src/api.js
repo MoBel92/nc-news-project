@@ -16,6 +16,30 @@ export const getArticles = () => {
     });
 };
 
+export const getCommentsByArticleId = (articleId) => {
+  return axios
+    .get(`/api/articles/${articleId}/comments`)
+    .then(({ data }) => {
+      return data.comments;
+    })
+    .catch((error) => {
+      console.error("Failed to fetch comments:", error);
+      throw error;
+    });
+};
+
+export const getUsers = () => {
+  return api
+    .get(`/api/users`)
+    .then(({ data }) => {
+      return data.users;
+    })
+    .catch((error) => {
+      console.error("Error fetching users:", error);
+      throw error;
+    });
+};
+
 export const getArticlesById = (article_id) => {
   return api
     .get(`/api/articles/${article_id}`)
@@ -36,6 +60,29 @@ export const getTopics = () => {
     })
     .catch((error) => {
       console.error("Error fetching topics:", error);
+      throw error;
+    });
+};
+
+export const postComment = (article_id, username, body) => {
+  return api
+    .post(`/articles/${article_id}/comments`, { username, body })
+    .then((response) => response.data.comment)
+    .catch((error) => {
+      console.error("Failed to post comment:", error);
+      throw error;
+    });
+};
+
+export const voteOnArticle = (article_id, inc_votes) => {
+  return api
+    .patch(`/articles/${article_id}`, { inc_votes })
+    .then((response) => response.data.article.votes)
+    .catch((error) => {
+      console.error(
+        `Failed to update votes for article ID ${article_id}:`,
+        error
+      );
       throw error;
     });
 };

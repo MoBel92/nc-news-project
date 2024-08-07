@@ -6,10 +6,11 @@ import "../style/singleArticle.css";
 const SingleArticle = () => {
   const { article_id } = useParams();
   const [article, setArticle] = useState(null);
-  const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
-  const [isCommentsVisible, setIsCommentsVisible] = useState(false);
+  const [error, setError] = useState(null);
   const [votes, setVotes] = useState(0);
+  const [newComment, setNewComment] = useState("");
+  const [commentError, setCommentError] = useState(null);
 
   useEffect(() => {
     getArticlesById(article_id)
@@ -23,30 +24,45 @@ const SingleArticle = () => {
   }, [article_id]);
 
   useEffect(() => {
-    if (isCommentsVisible) {
-      getCommentsByArticleId(article_id)
-        .then((data) => {
-          console.log(data);
-          setComments(data);
-        })
-        .catch((err) => {
-          setError(err.message || "Failed to load comments");
-        });
-    }
-  }, [article_id, isCommentsVisible]);
+    getCommentsByArticleId(article_id)
+      .then((data) => {
+        console.log(data.comments);
+        setComments(data.comments);
+      })
+      .catch((err) => {
+        setError(err.message || "Failed to load comments");
+      });
+  }, [article_id]);
 
-  const toggleComments = () => {
-    setIsCommentsVisible(!isCommentsVisible);
-  };
-
-  const handleVote = (type) => {
-    voteOnArticle(article_id, type)
+  const handleVote = (e) => {
+    const voteValue = Number(e.target.value);
+    voteOnArticle(article_id, voteValue)
       .then((updatedVotes) => {
-        console.log("Updated Votes:", updatedVotes);
         setVotes(updatedVotes);
       })
       .catch((err) => {
         setError(err.message || "Failed to vote");
+      });
+  };
+
+  const handleCommentChange = (e) => {
+    setNewComment(e.target.value);
+  };
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    if (newComment.trim() === "") {
+      setCommentError("Comment cannot be empty");
+      return;
+    }
+    postComment(article_id, { text: newComment })
+      .then((newComment) => {
+        setComments((prevComments) => [newComment, ...prevComments]);
+        setNewComment("");
+        setCommentError("");
+      })
+      .catch((err) => {
+        setCommentError(err.message || "Failed to post comment");
       });
   };
 
@@ -61,35 +77,50 @@ const SingleArticle = () => {
       <p>{article.body}</p>
 
       <div className="voting">
-        <button onClick={() => handleVote("upvote")}>Upvote</button>
-        <button onClick={() => handleVote("downvote")}>Downvote</button>
+        <button value={1} onClick={handleVote}>
+          Upvote
+        </button>
+        <button value={-1} onClick={handleVote}>
+          Downvote
+        </button>
         <p>Votes: {votes}</p>
       </div>
 
       <div className="comments">
-        <button onClick={toggleComments}>
-          {isCommentsVisible ? "Hide Comments" : "Show Comments"}
-        </button>
-        {isCommentsVisible && (
-          <>
-            <h2>Comments ({article.comment_count})</h2>
-            <ul>
-              {article.comment_count === 0 ? (
-                <p>No comments yet</p>
-              ) : (
-                comments.map((c) => (
-                  <li key={c.id} className="comment-card">
-                    <p className="comment-author">{c.author}</p>
-                    <p className="comment-date">
-                      {new Date(c.created_at).toLocaleDateString()}
-                    </p>
-                    <p className="comment-text">{c.text}</p>
-                  </li>
-                ))
-              )}
-            </ul>
-          </>
-        )}
+        <h2>Comments ({article.comment_count})</h2>
+        <ul>
+          {comments.length === 0 ? (
+            <p>No comments yet</p>
+          ) : (
+            comments.map((comment) => (
+              <li key={comment.comment_id} className="comment-card">
+                {" "}
+                {/* Use 'comment_id' as the key */}
+                <p className="comment-author">{comment.author}</p>
+                <p className="comment-date">
+                  {new Date(comment.created_at).toLocaleDateString()}
+                </p>
+                <p className="comment-text">{comment.body}</p>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
+
+      <div className="add-comment">
+        <h3>Add a Comment</h3>
+        <form onSubmit={handleCommentSubmit}>
+          <textarea
+            value={newComment}
+            onChange={handleCommentChange}
+            placeholder="Write your comment here..."
+            rows="4"
+            cols="50"
+          />
+          <br />
+          <button type="submit">Post Comment</button>
+          {commentError && <p className="error">{commentError}</p>}
+        </form>
       </div>
     </div>
   );

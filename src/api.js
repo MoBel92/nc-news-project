@@ -76,13 +76,16 @@ export const postComment = (article_id, username, body) => {
 
 export const voteOnArticle = (article_id, inc_votes) => {
   return api
-    .patch(`/articles/${article_id}`, { inc_votes })
-    .then(({ data }) => data.article.votes)
+    .patch(`/articles/${article_id}`, { inc_votes }) // Send PATCH request with article ID and increment/decrement votes
+    .then(({ data }) => {
+      // Ensure the response structure matches your expectations
+      return data.article.votes; // Extract the updated vote count
+    })
     .catch((error) => {
       console.error(
         `Failed to update votes for article ID ${article_id}:`,
         error
       );
-      throw error;
+      throw error; // Re-throw the error to be caught by the caller
     });
 };

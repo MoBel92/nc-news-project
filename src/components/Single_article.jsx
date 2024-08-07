@@ -11,6 +11,7 @@ const SingleArticle = () => {
   const [votes, setVotes] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [commentError, setCommentError] = useState(null);
+  const [votingInProgress, setVotingInProgress] = useState(false);
 
   useEffect(() => {
     getArticlesById(article_id)
@@ -26,24 +27,12 @@ const SingleArticle = () => {
   useEffect(() => {
     getCommentsByArticleId(article_id)
       .then((data) => {
-        console.log(data.comments);
         setComments(data.comments);
       })
       .catch((err) => {
         setError(err.message || "Failed to load comments");
       });
   }, [article_id]);
-
-  const handleVote = (e) => {
-    const voteValue = Number(e.target.value);
-    voteOnArticle(article_id, voteValue)
-      .then((updatedVotes) => {
-        setVotes(updatedVotes);
-      })
-      .catch((err) => {
-        setError(err.message || "Failed to vote");
-      });
-  };
 
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
@@ -66,8 +55,28 @@ const SingleArticle = () => {
       });
   };
 
+  const handleVote = (e) => {
+    const voteValue = Number(e.target.value);
+    // Optimistically update UI
+    setVotes((prevVotes) => prevVotes + voteValue);
+    setVotingInProgress(true);
+
+    voteOnArticle(article_id, voteValue)
+      .then((updatedVotes) => {
+        setVotes(updatedVotes);
+        setVotingInProgress(false);
+      })
+      .catch((err) => {
+        setVotes((prevVotes) => prevVotes - voteValue); // Revert vote
+        setError(err.message || "Failed to vote");
+        setVotingInProgress(false);
+      });
+  };
+
   if (error) return <p className="error">Error: {error}</p>;
   if (!article) return <p className="loading">Loading article...</p>;
+
+  // have to work on the vote handler
 
   return (
     <div className="single-article">
@@ -77,34 +86,13 @@ const SingleArticle = () => {
       <p>{article.body}</p>
 
       <div className="voting">
-        <button value={1} onClick={handleVote}>
+        <button value={1} onClick={handleVote} disabled={votingInProgress}>
           Upvote
         </button>
-        <button value={-1} onClick={handleVote}>
+        <button value={-1} onClick={handleVote} disabled={votingInProgress}>
           Downvote
         </button>
         <p>Votes: {votes}</p>
-      </div>
-
-      <div className="comments">
-        <h2>Comments ({article.comment_count})</h2>
-        <ul>
-          {comments.length === 0 ? (
-            <p>No comments yet</p>
-          ) : (
-            comments.map((comment) => (
-              <li key={comment.comment_id} className="comment-card">
-                {" "}
-                {/* Use 'comment_id' as the key */}
-                <p className="comment-author">{comment.author}</p>
-                <p className="comment-date">
-                  {new Date(comment.created_at).toLocaleDateString()}
-                </p>
-                <p className="comment-text">{comment.body}</p>
-              </li>
-            ))
-          )}
-        </ul>
       </div>
 
       <div className="add-comment">
@@ -121,6 +109,27 @@ const SingleArticle = () => {
           <button type="submit">Post Comment</button>
           {commentError && <p className="error">{commentError}</p>}
         </form>
+      </div>
+
+      <div className="comments">
+        <h2>Comments ({article.comment_count})</h2>
+        <ul className="comment-list">
+          {comments.length === 0 ? (
+            <p>No comments yet</p>
+          ) : (
+            comments.map((comment) => (
+              <li key={comment.comment_id} className="comment-card">
+                <div className="comment-header">
+                  <p className="comment-author">{comment.author}</p>
+                  <p className="comment-date">
+                    {new Date(comment.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <p className="comment-body">{comment.body}</p>
+              </li>
+            ))
+          )}
+        </ul>
       </div>
     </div>
   );

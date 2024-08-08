@@ -4,9 +4,11 @@ const api = axios.create({
   baseURL: "https://backend-project-nc-news-owan.onrender.com",
 });
 
-export const getArticles = () => {
+export const getArticles = (sort_by = "created_at", order = "desc") => {
   return api
-    .get(`/api/articles`)
+    .get("/api/articles", {
+      params: { sort_by, order },
+    })
     .then(({ data }) => {
       return data.articles;
     })
@@ -16,9 +18,15 @@ export const getArticles = () => {
     });
 };
 
-export const getArticlesByTopic = (topic) => {
+export const getArticlesByTopic = (
+  topic,
+  sort_by = "created_at",
+  order = "desc"
+) => {
   return api
-    .get(`/api/articles?topic=${topic}`)
+    .get("/api/articles", {
+      params: { topic, sort_by, order },
+    })
     .then(({ data }) => {
       return data.articles;
     })

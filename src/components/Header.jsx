@@ -79,7 +79,7 @@ export default function NavigationBar() {
         className={`nav-item category-dropdown ${isDropdownOpen ? "open" : ""}`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        <button className="dropdown-toggle">{selectedTopic || "Topics"}</button>
+        <button className="dropdown-toggle">Topics</button>
         {isDropdownOpen && (
           <div className="dropdown-menu">
             {topics.map((topic) => (

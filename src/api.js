@@ -20,7 +20,7 @@ export const getCommentsByArticleId = (articleId) => {
   return api
     .get(`/api/articles/${articleId}/comments`)
     .then(({ data }) => {
-      return data;
+      return data.comments;
     })
     .catch((error) => {
       console.error("Failed to fetch comments:", error);
@@ -91,3 +91,14 @@ export const voteOnArticle = (article_id, inc_votes) => {
     });
 };
 
+export const deleteCommentById = (commentId) => {
+  return api
+    .delete(`/api/comments/${commentId}`)
+    .then(({ data }) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Error deleting comment:", error);
+      throw error;
+    });
+};

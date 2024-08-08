@@ -4,6 +4,7 @@ import {
   voteOnArticle,
   getCommentsByArticleId,
   postComment,
+  deleteCommentById,
 } from "../api";
 import { useParams } from "react-router-dom";
 import "../style/singleArticle.css";
@@ -24,6 +25,7 @@ const SingleArticle = () => {
   const [newComment, setNewComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     getArticlesById(article_id)
@@ -39,7 +41,7 @@ const SingleArticle = () => {
   useEffect(() => {
     getCommentsByArticleId(article_id)
       .then((data) => {
-        setComments(data.comments);
+        setComments(data);
       })
       .catch((err) => {
         setError(err.message || "Failed to load comments");
@@ -92,6 +94,25 @@ const SingleArticle = () => {
       });
   };
 
+  const handleDelete = (commentId) => {
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      setIsDeleting(true);
+      deleteCommentById(commentId)
+        .then(() => {
+          setComments((prevComments) =>
+            prevComments.filter((comment) => comment.comment_id !== commentId)
+          );
+        })
+        .catch((err) => {
+          console.error("Failed to delete comment:", err);
+          alert("There was an issue deleting your comment. Please try again.");
+        })
+        .finally(() => {
+          setIsDeleting(false);
+        });
+    }
+  };
+
   if (error) return <p className="error">Error: {error}</p>;
   if (!article) return <p className="loading">Loading article...</p>;
 
@@ -135,6 +156,24 @@ const SingleArticle = () => {
 
       <div className="comments">
         <h2>Comments ({article.comment_count})</h2>
+        <div className="add-comment">
+          <h3>Add a Comment</h3>
+          <form onSubmit={handleCommentSubmit}>
+            <textarea
+              value={newComment}
+              onChange={handleCommentChange}
+              placeholder="Write your comment here..."
+              rows="4"
+              cols="50"
+              disabled={isSubmitting}
+            />
+            <br />
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Post Comment"}
+            </button>
+            {commentError && <p className="error">{commentError}</p>}
+          </form>
+        </div>
         <ul>
           {comments.length === 0 ? (
             <p>No comments yet</p>
@@ -146,29 +185,19 @@ const SingleArticle = () => {
                   {new Date(comment.created_at).toLocaleDateString()}
                 </p>
                 <p className="comment-text">{comment.body}</p>
+                {comment.author === username && (
+                  <button
+                    onClick={() => handleDelete(comment.comment_id)}
+                    className="delete-button"
+                    disabled={isDeleting}
+                  >
+                    Delete
+                  </button>
+                )}
               </li>
             ))
           )}
         </ul>
-      </div>
-
-      <div className="add-comment">
-        <h3>Add a Comment</h3>
-        <form onSubmit={handleCommentSubmit}>
-          <textarea
-            value={newComment}
-            onChange={handleCommentChange}
-            placeholder="Write your comment here..."
-            rows="4"
-            cols="50"
-            disabled={isSubmitting}
-          />
-          <br />
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Post Comment"}
-          </button>
-          {commentError && <p className="error">{commentError}</p>}
-        </form>
       </div>
     </div>
   );
@@ -177,4 +206,3 @@ const SingleArticle = () => {
 export default SingleArticle;
 
 //ticket 7  still having little issue i can t downvote unless if i refresh the page
-

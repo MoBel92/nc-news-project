@@ -177,3 +177,4 @@ const SingleArticle = () => {
 export default SingleArticle;
 
 //ticket 7  still having little issue i can t downvote unless if i refresh the page
+

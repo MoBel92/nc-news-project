@@ -90,3 +90,4 @@ export const voteOnArticle = (article_id, inc_votes) => {
       throw error;
     });
 };
+

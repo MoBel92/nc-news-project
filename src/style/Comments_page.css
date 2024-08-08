@@ -1,0 +1,68 @@
+/* Overall container styling */
+.comments-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Title styling */
+.comments-container h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Loading text styling */
+.loading {
+  font-size: 1.2em;
+  color: #666;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* List styling */
+.comments-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* List item styling */
+.comments-container li {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: background-color 0.3s;
+}
+
+.comments-container li:hover {
+  background: #e6e6e6;
+}
+
+/* Comment body styling */
+.comments-container p {
+  margin: 5px 0;
+}
+
+/* Author styling */
+.comments-container .author {
+  font-weight: bold;
+  color: #555;
+}
+
+/* Date styling */
+.comments-container .date {
+  font-style: italic;
+  color: #999;
+}
+
+/* No comments styling */
+.no-comments {
+  font-size: 1.2em;
+  color: #888;
+  text-align: center;
+  margin-top: 50px;
+}

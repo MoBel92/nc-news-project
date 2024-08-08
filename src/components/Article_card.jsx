@@ -11,13 +11,15 @@ const ArticleCard = ({ article, onToggleComments }) => {
           alt={article.title}
           className="article-image"
         />
+
+        <h3>{article.title}</h3>
+        <p>
+          By {article.author} |{" "}
+          {new Date(article.created_at).toLocaleDateString()}
+        </p>
+        <p>Topic: {article.topic}</p>
+        <p>Votes: {article.votes}</p>
       </Link>
-      <h3>{article.title}</h3>
-      <p>
-        By {article.author} |{" "}
-        {new Date(article.created_at).toLocaleDateString()}
-      </p>
-      <p>Topic: {article.topic}</p>
       <p>
         <Link
           to={`/article/${article.article_id}/comments`}
@@ -26,7 +28,6 @@ const ArticleCard = ({ article, onToggleComments }) => {
           Comments: {article.comment_count}
         </Link>
       </p>
-      <p>Votes: {article.votes}</p>
     </div>
   );
 };

@@ -28,7 +28,7 @@ export default function NavigationBar() {
     getUsers()
       .then((data) => {
         setUsers(data);
-        // This fix it like an o ptionally set a default user[0]
+
         if (data.length > 0) {
           setSelectedUser(data[0]);
         }
@@ -66,7 +66,7 @@ export default function NavigationBar() {
   const handleUserChange = (user) => {
     setSelectedUser(user);
     setIsUserDropdownOpen(false);
-    // I will handle the user selection logic here
+    console.log(selectedUser);
   };
 
   return (
@@ -119,7 +119,7 @@ export default function NavigationBar() {
             {users.map((user) => (
               <button
                 key={user.username}
-                onClick={() => handleUserChange(user)}
+                onClick={() => [handleUserChange(user), setSelectedUser(user)]}
               >
                 {user.name}
               </button>

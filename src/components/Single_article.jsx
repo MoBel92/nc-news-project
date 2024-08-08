@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { getArticlesById, voteOnArticle, getCommentsByArticleId } from "../api";
+import {
+  getArticlesById,
+  voteOnArticle,
+  getCommentsByArticleId,
+  postComment,
+} from "../api";
 import { useParams } from "react-router-dom";
 import "../style/singleArticle.css";
+import { Modal, Button, Header, Icon } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
+import { useUser } from "./Users";
 
 const SingleArticle = () => {
   const { article_id } = useParams();
+  const { username } = useUser();
   const [article, setArticle] = useState(null);
-  const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
   const [votes, setVotes] = useState(0);
+  const [voted, setVoted] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [voteValue, setVoteValue] = useState(0);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [commentError, setCommentError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     getArticlesById(article_id)
@@ -26,7 +39,6 @@ const SingleArticle = () => {
   useEffect(() => {
     getCommentsByArticleId(article_id)
       .then((data) => {
-        console.log(data.comments);
         setComments(data.comments);
       })
       .catch((err) => {
@@ -34,17 +46,26 @@ const SingleArticle = () => {
       });
   }, [article_id]);
 
-  const handleVote = (e) => {
-    const voteValue = Number(e.target.value);
+  const handleVoteClick = (value) => {
+    setVoteValue(value);
+    setOpen(true);
+  };
+
+  const confirmVote = () => {
+    setVotes((prevVotes) => prevVotes + voteValue);
+    setVoted(true);
+
     voteOnArticle(article_id, voteValue)
-      .then((updatedVotes) => {
-        setVotes(updatedVotes);
+      .then(() => {
+        setOpen(false);
       })
       .catch((err) => {
         setError(err.message || "Failed to vote");
+
+        setVotes((prevVotes) => prevVotes - voteValue);
+        setVoted(false);
       });
   };
-
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
   };
@@ -55,7 +76,9 @@ const SingleArticle = () => {
       setCommentError("Comment cannot be empty");
       return;
     }
-    postComment(article_id, { text: newComment })
+
+    setIsSubmitting(true);
+    postComment(article_id, username, newComment)
       .then((newComment) => {
         setComments((prevComments) => [newComment, ...prevComments]);
         setNewComment("");
@@ -63,6 +86,9 @@ const SingleArticle = () => {
       })
       .catch((err) => {
         setCommentError(err.message || "Failed to post comment");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
@@ -77,14 +103,35 @@ const SingleArticle = () => {
       <p>{article.body}</p>
 
       <div className="voting">
-        <button value={1} onClick={handleVote}>
+        <button onClick={() => handleVoteClick(1)} disabled={voted}>
           Upvote
         </button>
-        <button value={-1} onClick={handleVote}>
+        <button
+          onClick={() => handleVoteClick(-1)}
+          disabled={voted || votes <= 0}
+        >
           Downvote
         </button>
         <p>Votes: {votes}</p>
       </div>
+
+      <Modal basic onClose={() => setOpen(false)} open={open} size="small">
+        <Header icon>
+          <Icon name="archive" />
+          You are about to vote for this article
+        </Header>
+        <Modal.Content>
+          <p>Are you sure you want to vote for this article?</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button basic color="red" inverted onClick={() => setOpen(false)}>
+            <Icon name="remove" /> No
+          </Button>
+          <Button color="green" inverted onClick={confirmVote}>
+            <Icon name="checkmark" /> Yes
+          </Button>
+        </Modal.Actions>
+      </Modal>
 
       <div className="comments">
         <h2>Comments ({article.comment_count})</h2>
@@ -94,8 +141,6 @@ const SingleArticle = () => {
           ) : (
             comments.map((comment) => (
               <li key={comment.comment_id} className="comment-card">
-                {" "}
-                {/* Use 'comment_id' as the key */}
                 <p className="comment-author">{comment.author}</p>
                 <p className="comment-date">
                   {new Date(comment.created_at).toLocaleDateString()}
@@ -116,9 +161,12 @@ const SingleArticle = () => {
             placeholder="Write your comment here..."
             rows="4"
             cols="50"
+            disabled={isSubmitting}
           />
           <br />
-          <button type="submit">Post Comment</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Post Comment"}
+          </button>
           {commentError && <p className="error">{commentError}</p>}
         </form>
       </div>
@@ -127,3 +175,5 @@ const SingleArticle = () => {
 };
 
 export default SingleArticle;
+
+//ticket 7  still having little issue i can t downvote unless if i refresh the page

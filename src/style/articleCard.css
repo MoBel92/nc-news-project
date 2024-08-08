@@ -1,12 +1,13 @@
-/ .article-card {
-  background-color: #fff;
-  border-radius: 10px;
+.article-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  margin: 15px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 20px;
+  padding: 20px;
+  width: 300px; /* Fixed width for consistent card sizes */
   text-align: center;
-  max-width: 400px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .article-card:hover {
@@ -14,29 +15,45 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.article-card img {
+.article-image {
   width: 100%;
-  height: auto;
-  border-bottom: 2px solid #eee;
+  height: 200px; /* Fixed height for consistent image sizes */
+  object-fit: cover; /* Ensures the image covers the space without distortion */
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
-.article-card h3 {
-  font-size: 20px;
-  margin: 15px 0 10px;
+h3 {
+  font-size: 1.5em;
+  margin: 10px 0;
   color: #333;
 }
 
-.article-card p {
-  color: #777;
+p {
   margin: 5px 0;
-  font-size: 14px;
+  color: #555;
 }
 
-.article-card a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.article-card a:hover h3 {
+.comments-link {
   color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.comments-link:hover {
+  text-decoration: underline;
+}
+
+.article-card button {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.article-card button:hover {
+  background-color: #0056b3;
 }

@@ -16,6 +16,18 @@ export const getArticles = () => {
     });
 };
 
+export const getArticlesByTopic = (topic) => {
+  return api
+    .get(`/api/articles?topic=${topic}`)
+    .then(({ data }) => {
+      return data.articles;
+    })
+    .catch((error) => {
+      console.error("Error fetching articles by topic:", error);
+      throw error;
+    });
+};
+
 export const getCommentsByArticleId = (articleId) => {
   return api
     .get(`/api/articles/${articleId}/comments`)

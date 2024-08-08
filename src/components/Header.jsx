@@ -60,13 +60,12 @@ export default function NavigationBar() {
   const handleTopicsChange = (topic) => {
     setSelectedTopic(topic);
     setIsDropdownOpen(false);
-    navigate(`/topics/${topic}`);
+    navigate(`/articles/topics/${topic}`);
   };
 
   const handleUserChange = (user) => {
     setSelectedUser(user);
     setIsUserDropdownOpen(false);
-    console.log(selectedUser);
   };
 
   return (

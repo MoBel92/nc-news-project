@@ -65,8 +65,9 @@ export const getTopics = () => {
 };
 
 export const postComment = (article_id, username, body) => {
+  console.log(username);
   return api
-    .post(`/articles/${article_id}/comments`, { username, body })
+    .post(`/api/articles/${article_id}/comments`, { username, body })
     .then(({ data }) => data.comment)
     .catch((error) => {
       console.error("Failed to post comment:", error);
@@ -75,17 +76,18 @@ export const postComment = (article_id, username, body) => {
 };
 
 export const voteOnArticle = (article_id, inc_votes) => {
+  console.log(inc_votes);
   return api
-    .patch(`/articles/${article_id}`, { inc_votes }) // Send PATCH request with article ID and increment/decrement votes
+    .patch(`/api/articles/${article_id}`, { inc_votes })
     .then(({ data }) => {
-      // Ensure the response structure matches your expectations
-      return data.article.votes; // Extract the updated vote count
+      data.article.votes;
     })
     .catch((error) => {
       console.error(
         `Failed to update votes for article ID ${article_id}:`,
         error
       );
-      throw error; // Re-throw the error to be caught by the caller
+      throw error;
     });
 };
+

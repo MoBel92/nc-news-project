@@ -21,7 +21,11 @@ const ArticlesList = () => {
           setArticles(data);
         })
         .catch((err) => {
-          setError(err.message);
+          if (err.response?.status === 400) {
+            setError("Invalid topic.");
+          } else {
+            setError("An error occurred.");
+          }
         });
     };
 

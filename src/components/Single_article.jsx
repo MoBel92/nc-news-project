@@ -95,22 +95,20 @@ const SingleArticle = () => {
   };
 
   const handleDelete = (commentId) => {
-    if (window.confirm("Are you sure you want to delete this comment?")) {
-      setIsDeleting(true);
-      deleteCommentById(commentId)
-        .then(() => {
-          setComments((prevComments) =>
-            prevComments.filter((comment) => comment.comment_id !== commentId)
-          );
-        })
-        .catch((err) => {
-          console.error("Failed to delete comment:", err);
-          alert("There was an issue deleting your comment. Please try again.");
-        })
-        .finally(() => {
-          setIsDeleting(false);
-        });
-    }
+    setIsDeleting(true);
+    deleteCommentById(commentId)
+      .then(() => {
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.comment_id !== commentId)
+        );
+      })
+      .catch((err) => {
+        console.error("Failed to delete comment:", err);
+        alert("There was an issue deleting your comment. Please try again.");
+      })
+      .finally(() => {
+        setIsDeleting(false);
+      });
   };
 
   if (error) return <p className="error">Error: {error}</p>;

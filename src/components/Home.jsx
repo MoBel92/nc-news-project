@@ -1,13 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import ArticlesList from "./Articles";
+import "../style/Home.css";
 
 const Home = () => {
   return (
     <div className="home">
-      <h1>Welcome to NC News</h1>
-      <div className="navigation">
-        <Link to="/articles">View Articles</Link>
-      </div>
+      <h1>Welcome to the Article Viewer</h1>
+      <ArticlesList />
     </div>
   );
 };

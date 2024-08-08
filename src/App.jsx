@@ -7,7 +7,7 @@ import Home from "./components/Home";
 import Footer from "./components/Footer";
 import "./style/app.css";
 import CommentsPage from "./components/Comments_page";
-
+import PageNotFound from "./components/PageNotFound";
 import { UserProvider } from "./components/Users";
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
               path="/article/:article_id/comments"
               element={<CommentsPage />}
             />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </main>
         <Footer />

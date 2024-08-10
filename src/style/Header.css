@@ -1,0 +1,29 @@
+/* header.css */
+
+.header-container {
+  background-color: #1e293b; /* Dark slate background color */
+  padding: 20px;
+  text-align: center;
+  border-bottom: 4px solid #3b82f6; /* Blue underline to match with the overall theme */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a subtle 3D effect */
+}
+
+.header-title {
+  font-size: 3em; /* Large font size for the main title */
+  color: #ffffff; /* White text color for contrast */
+  margin: 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px; /* Spacing between letters */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Modern font family */
+}
+
+.header-title::after {
+  content: "";
+  display: block;
+  width: 80px;
+  margin: 10px auto;
+  height: 4px;
+  background-color: #3b82f6; /* Blue accent line under the title */
+  border-radius: 2px;
+}

@@ -38,7 +38,9 @@ const ArticlesList = () => {
   return (
     <div className="articles-container">
       <div className="sort-controls">
-        <label htmlFor="sort-by">Sort by:</label>
+        <label htmlFor="sort-by" className="query">
+          Sort by:
+        </label>
         <select
           id="sort-by"
           value={sortBy}
@@ -49,7 +51,9 @@ const ArticlesList = () => {
           <option value="votes">Votes</option>
         </select>
 
-        <label htmlFor="order">Order:</label>
+        <label htmlFor="order" className="query">
+          Order:
+        </label>
         <select
           id="order"
           value={order}

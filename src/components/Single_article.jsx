@@ -116,9 +116,9 @@ const SingleArticle = () => {
 
   return (
     <div className="single-article">
-      <h1>{article.title}</h1>
+      <h1 className="title">{article.title}</h1>
       <p className="author">By {article.author}</p>
-      <img src={article.image_url} alt={article.title} />
+      <img src={article.article_img_url} alt={article.title} />
       <p>{article.body}</p>
 
       <div className="voting">
@@ -131,6 +131,7 @@ const SingleArticle = () => {
         >
           Downvote
         </button>
+        <br></br>
         <p>Votes: {votes}</p>
       </div>
 

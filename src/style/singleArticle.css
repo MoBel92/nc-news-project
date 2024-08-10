@@ -1,3 +1,4 @@
+/* Container for the single article */
 .single-article {
   max-width: 800px;
   margin: 0 auto;
@@ -5,53 +6,60 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex; /* Apply flexbox */
-  flex-wrap: wrap; /* Allow content to wrap */
-  gap: 20px; /* Space between flex items */
+  display: flex;
+  flex-direction: column; /* Default to column layout for mobile-first */
+  gap: 20px; /* Space between elements */
 }
 
-.single-article h1 {
+/* Title styling */
+.title {
   font-size: 2.5em;
   margin-bottom: 10px;
-  flex-basis: 100%; /* Take full width */
+  color: black;
 }
 
+/* Author styling */
 .single-article .author {
   font-size: 1.2em;
   color: #555;
   margin-bottom: 20px;
-  flex-basis: 100%; /* Take full width */
 }
 
+/* Image styling */
 .single-article img {
-  max-width: 50%;
+  width: auto; /* Make image responsive */
   height: auto;
   border-radius: 8px;
   margin-bottom: 20px;
-  border: 5px solid #ddd; /* Add border around the image */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: add shadow to the image */
-  flex-basis: 100%; /* Allow image to take full width */
+  border: 5px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Paragraph styling */
 .single-article p {
   line-height: 1.6;
   color: #333;
   margin-bottom: 20px;
-  flex: 1 1 auto; /* Allow paragraphs to flex and take available space */
 }
 
+/* Voting section styling */
 .voting {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  flex-basis: 100%; /* Take full width */
+}
+.voting p {
+  font-weight: bold; /* Make the text bold */
+  font-size: 1.2em; /* Adjust font size */
+  color: #333; /* Color for the vote text */
+  margin: 0; /* Remove default margin */
 }
 
-/* Button and other styles remain unchanged */
-
+/* Voting button styling */
 .voting button {
   background-color: #007bff;
+ 
   color: white;
   border: none;
   padding: 10px 20px;
@@ -70,20 +78,24 @@
   background-color: #0056b3;
 }
 
+/* Comments section styling */
 .comments {
   margin-bottom: 30px;
 }
 
+/* Comments title styling */
 .comments h2 {
   font-size: 2em;
   margin-bottom: 15px;
 }
 
+/* Comment list styling */
 .comments ul {
   list-style-type: none;
   padding: 0;
 }
 
+/* Individual comment styling */
 .comment-card {
   background-color: white;
   border-radius: 8px;
@@ -92,30 +104,36 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Comment author styling */
 .comment-author {
   font-weight: bold;
   margin-bottom: 5px;
 }
 
+/* Comment date styling */
 .comment-date {
   font-size: 0.9em;
   color: #777;
   margin-bottom: 10px;
 }
 
+/* Comment text styling */
 .comment-text {
   line-height: 1.5;
 }
 
+/* Add comment section styling */
 .add-comment {
   margin-top: 20px;
 }
 
+/* Add comment title styling */
 .add-comment h3 {
   font-size: 1.5em;
   margin-bottom: 15px;
 }
 
+/* Add comment textarea styling */
 .add-comment textarea {
   width: 100%;
   padding: 10px;
@@ -126,6 +144,7 @@
   margin-bottom: 10px;
 }
 
+/* Add comment button styling */
 .add-comment button {
   background-color: #28a745;
   color: white;
@@ -146,12 +165,14 @@
   background-color: #218838;
 }
 
+/* Error styling */
 .error {
   color: red;
   font-weight: bold;
   margin-top: 10px;
 }
 
+/* Delete button styling */
 .delete-button {
   background-color: #e74c3c;
   color: white;
@@ -159,22 +180,4 @@
   border-radius: 5px;
   padding: 10px 15px;
   font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.delete-button:hover {
-  background-color: #c0392b;
-  transform: scale(1.05);
-}
-
-.delete-button:active {
-  background-color: #a93226;
-  transform: scale(0.95);
-}
-
-.delete-button:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
-  transform: none;
-}
+  cursor:

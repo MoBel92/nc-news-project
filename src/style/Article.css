@@ -1,18 +1,20 @@
+/* Container for articles and sort controls */
 .articles-container {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Sort controls styling */
 .sort-controls {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 20px;
 }
 
 .sort-controls label {
-  margin-right: 10px;
+  margin-bottom: 10px; /* Adjust spacing between label and select box */
   font-size: 16px;
   color: #333;
 }
@@ -32,6 +34,7 @@
   border-color: #007bff;
 }
 
+/* Articles grid styling */
 .articles-list {
   display: grid;
   gap: 20px;
@@ -39,6 +42,7 @@
   justify-content: center;
 }
 
+/* Article card styling */
 .article-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -52,6 +56,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Error and loading states */
 .error {
   color: red;
   font-weight: bold;
@@ -60,4 +65,29 @@
 .loading {
   font-size: 1.2em;
   color: #555;
+}
+
+/* Media queries for responsiveness */
+
+/* Tablet and small desktops */
+@media (min-width: 768px) {
+  .sort-controls {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .sort-controls label {
+    margin-right: 10px; /* Adjust spacing for horizontal layout */
+    margin-bottom: 0; /* Remove bottom margin */
+  }
+}
+
+/* Large desktops */
+@media (min-width: 1024px) {
+  .articles-list {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(300px, 1fr)
+    ); /* Increase min width for larger screens */
+  }
 }

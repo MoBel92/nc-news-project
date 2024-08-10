@@ -1,37 +1,108 @@
-.app-container {
+.footer-container {
+  width: 100%;
+  margin-top: 24px;
+  background-color: #1e293b; /* Corresponds to slate-900 in Tailwind */
+  color: #d1d5db; /* Corresponds to gray-300 in Tailwind */
+  padding: 32px 8px;
+}
+
+.footer-sections {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping if there are many sections */
+  justify-content: space-between;
+  gap: 32px;
+  border-bottom: 2px solid #4b5563; /* Corresponds to gray-600 in Tailwind */
+  padding-bottom: 32px;
+}
+
+.footer-sections > div {
+  flex: 1 1 200px; /* Ensures a minimum width of 200px for each section */
+  margin-right: 20px; /* Optional: Add space between sections */
+}
+
+.section-title {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding-top: 8px;
+}
+
+.section-item {
+  padding: 8px 0;
+  color: #6b7280; /* Corresponds to gray-500 in Tailwind */
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.section-item:hover {
+  color: #ffffff;
+}
+
+.newsletter-section {
+  flex: 1 1 100%; /* Takes up full width when wrapping */
+  padding-top: 16px;
+}
+
+.newsletter-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.newsletter-description {
+  padding: 16px 0;
+}
+
+.newsletter-form {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
-main {
-  flex: 1;
-}
-
-.footer {
-  position: sticky;
-  bottom: 0;
-  left: 0;
+.email-input {
   width: 100%;
-  height: 40px;
+  padding: 8px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
 
-  background-color: #333;
-  color: #fff;
+.subscribe-button {
+  padding: 8px;
+  background-color: #3b82f6; /* Corresponds to blue-500 in Tailwind */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.footer-bottom {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 8px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  box-sizing: border-box;
-  font-size: 0.6em;
+  flex-direction: column;
+  text-align: center;
+  color: #6b7280; /* Corresponds to gray-500 in Tailwind */
 }
 
-.footer .copyright {
-  margin: 0;
-  font-size: 0.5em;
+.footer-rights {
+  padding: 16px 0;
 }
 
-.footer .contact-info {
-  margin: 0;
-  text-align: right;
-  font-size: 0.5em;
+.social-icons {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  margin: 16px auto;
+  font-size: 24px;
+}
+
+.social-icon {
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.social-icon:hover {
+  color: #ffffff;
 }

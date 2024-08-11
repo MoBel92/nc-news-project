@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getTopics, getUsers } from "../api";
+import { getTopics } from "../api";
+import { useUser } from "./Users"; // Import the useUser hook
 import "../style/BarNav.css";
 
 export default function NavigationBar() {
   const [topics, setTopics] = useState([]);
-  const [users, setUsers] = useState([]); // State for users
-  const [selectedTopic, setSelectedTopic] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [selectedTopic, setSelectedTopic] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(true); // Dark mode state
+  const { user, setUser } = useUser(); // Get user and logoutUser from context
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const userDropdownRef = useRef(null);
@@ -22,20 +22,6 @@ export default function NavigationBar() {
       })
       .catch((error) => {
         console.error("Failed to fetch topics:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    getUsers()
-      .then((data) => {
-        setUsers(data);
-
-        if (data.length > 0) {
-          setSelectedUser(data[0]);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch users:", error);
       });
   }, []);
 
@@ -64,14 +50,14 @@ export default function NavigationBar() {
     navigate(`/articles/topics/${topic}`);
   };
 
-  const handleUserChange = (user) => {
-    setSelectedUser(user);
-    setIsUserDropdownOpen(false);
-  };
-
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.body.classList.toggle("light-mode", !isDarkMode);
+  };
+
+  const handleLogout = () => {
+    setUser(null); // Use the logoutUser function from context
+    navigate("/login");
   };
 
   return (
@@ -82,7 +68,7 @@ export default function NavigationBar() {
 
       <div
         ref={dropdownRef}
-        className={`nav-item category-dropdown ${isDropdownOpen ? "open" : ""}`}
+        className={`category-dropdown ${isDropdownOpen ? "open" : ""}`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         <button className="dropdown-toggle">Topics</button>
@@ -109,27 +95,26 @@ export default function NavigationBar() {
         className={`user-login ${isUserDropdownOpen ? "open" : ""}`}
         onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
       >
-        {selectedUser && (
+        {user ? (
           <>
             <div className="user-avatar">
-              <img src={selectedUser.avatar_url} alt={selectedUser.name} />
+              <img
+                src={user.avatar_url}
+                alt={user.name}
+                className="user-circle"
+              />
             </div>
-            <Link to="/login" className="nav-item">
-              User Login
-            </Link>
+            <span className="user-name">{user.name}</span>
+            {isUserDropdownOpen && (
+              <div className="user-dropdown-menu">
+                <button onClick={handleLogout}>Logout</button>
+              </div>
+            )}
           </>
-        )}
-        {isUserDropdownOpen && (
-          <div className="user-dropdown-menu">
-            {users.map((user) => (
-              <button
-                key={user.username}
-                onClick={() => [handleUserChange(user), setSelectedUser(user)]}
-              >
-                {user.name}
-              </button>
-            ))}
-          </div>
+        ) : (
+          <Link to="/login" className="nav-item">
+            User Login
+          </Link>
         )}
       </div>
 

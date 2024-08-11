@@ -1,15 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import BarNav from "./components/BarNav";
-import Articles from "./components/Articles";
+import ArticlesList from "./components/Articles";
 import SingleArticle from "./components/Single_article";
 import Home from "./components/Home";
 import Footer from "./components/Footer";
-import "./style/app.css";
 import CommentsPage from "./components/Comments_page";
 import PageNotFound from "./components/PageNotFound";
 import { UserProvider } from "./components/Users";
 import Header from "./components/Header";
+import LoginPage from "./components/Login";
+import "./style/app.css";
 
 function App() {
   return (
@@ -20,8 +21,9 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/articles" element={<Articles />} />
-            <Route path="/articles/topics/:topic" element={<Articles />} />
+            <Route path="/login" element={<LoginPage />} />{" "}
+            <Route path="/articles" element={<ArticlesList />} />
+            <Route path="/articles/topics/:topic" element={<ArticlesList />} />
             <Route path="/article/:article_id" element={<SingleArticle />} />
             <Route
               path="/article/:article_id/comments"

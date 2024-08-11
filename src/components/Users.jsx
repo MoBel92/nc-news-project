@@ -10,21 +10,47 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getUsers()
-      .then((data) => {
-        const currentUser = data[0];
-        setUser(currentUser);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch users:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // Try to fetch user from localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setLoading(false);
+    } else {
+      // Fetch users from API if no user is stored
+      getUsers()
+        .then((data) => {
+          // Set a default user if users exist
+          if (data.length > 0) {
+            const currentUser = data[0]; // Replace with actual login logic
+            setUser(currentUser);
+          } else {
+            console.warn("No users found");
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to fetch users:", error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }, []);
 
+  // Provide a method to update user from other components
+  const loginUser = (user) => {
+    setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
+  };
+
+  const logoutUser = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
+
   const value = {
-    username: user ? user.username : null,
+    user,
+    setUser: loginUser,
+    logoutUser,
   };
 
   if (loading) {

@@ -18,6 +18,7 @@ const ArticlesList = () => {
         : getArticles(sortBy, order);
       fetchFunction
         .then((data) => {
+          console.log(data);
           setArticles(data);
         })
         .catch((err) => {

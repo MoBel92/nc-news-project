@@ -7,7 +7,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column; /* Default to column layout for mobile-first */
+  flex-direction: column; /* Mobile-first layout */
   gap: 20px; /* Space between elements */
 }
 
@@ -15,11 +15,11 @@
 .title {
   font-size: 2.5em;
   margin-bottom: 10px;
-  color: black;
+  color: #000;
 }
 
 /* Author styling */
-.single-article .author {
+.author {
   font-size: 1.2em;
   color: #555;
   margin-bottom: 20px;
@@ -27,7 +27,7 @@
 
 /* Image styling */
 .single-article img {
-  width: auto; /* Make image responsive */
+  width: 100%; /* Full width for responsiveness */
   height: auto;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -49,17 +49,17 @@
   align-items: center;
   margin-bottom: 20px;
 }
+
 .voting p {
-  font-weight: bold; /* Make the text bold */
-  font-size: 1.2em; /* Adjust font size */
-  color: #333; /* Color for the vote text */
-  margin: 0; /* Remove default margin */
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #333;
+  margin: 0;
 }
 
 /* Voting button styling */
 .voting button {
   background-color: #007bff;
-
   color: white;
   border: none;
   padding: 10px 20px;
@@ -181,4 +181,47 @@
   padding: 10px 15px;
   font-size: 1em;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .single-article {
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .title {
+    font-size: 2em;
+  }
+
+  .author,
+  .single-article p {
+    font-size: 1em;
+  }
+
+  .voting {
+    flex-direction: column;
+  }
+
+  .voting button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .comments h2 {
+    font-size: 1.5em;
+  }
+
+  .add-comment textarea {
+    font-size: 0.9em;
+  }
+
+  .comment-card {
+    padding: 10px;
+  }
 }

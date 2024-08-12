@@ -1,3 +1,4 @@
+/* Base styles */
 .login-container {
   background: #ffffff;
   padding: 2rem;
@@ -6,12 +7,15 @@
   width: 100%;
   max-width: 400px;
   text-align: center;
+  margin: 1rem;
 }
+
 main {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
 
 .login-container h2 {
@@ -65,4 +69,31 @@ button:hover {
   color: #ff4d4d;
   margin-top: 1rem;
   font-size: 0.875rem;
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1rem;
+    max-width: 100%;
+    margin: 0 1rem;
+  }
+
+  .login-container h2 {
+    font-size: 1.25rem;
+  }
+
+  input[type="text"],
+  button {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+
+  label {
+    font-size: 0.875rem;
+  }
+
+  .error {
+    font-size: 0.75rem;
+  }
 }
